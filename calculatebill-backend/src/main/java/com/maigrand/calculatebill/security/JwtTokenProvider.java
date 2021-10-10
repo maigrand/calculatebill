@@ -2,6 +2,7 @@ package com.maigrand.calculatebill.security;
 
 import com.maigrand.calculatebill.entity.UserEntity;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     @Value("${app.security.jwt.secret}")
@@ -24,40 +26,23 @@ public class JwtTokenProvider {
         UserEntity user = (UserEntity) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate;
-
-        if (rememberMe) {
-            expiryDate = new Date(now.getTime() + this.rememberMeExpireLength);
-        } else {
-            expiryDate = new Date(now.getTime() + this.expireLength);
-        }
+        Date expiryDate = new Date(now.getTime() + (rememberMe ? this.rememberMeExpireLength : this.expireLength));
 
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("id", user.getId())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
     }
 
-    //todo: Доделать обработку исключений
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
             return true;
-        } catch (ExpiredJwtException e) {
-            e.printStackTrace();
-        } catch (UnsupportedJwtException e) {
-            e.printStackTrace();
-        } catch (MalformedJwtException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public String getEmailFromToken(String token) {
