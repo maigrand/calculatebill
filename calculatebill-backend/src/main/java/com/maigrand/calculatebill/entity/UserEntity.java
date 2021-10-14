@@ -28,6 +28,8 @@ public class UserEntity implements UserDetails {
     @JsonIgnore
     private String password;
 
+    private boolean active;
+
     public String getId() {
         return id.toString();
     }
@@ -59,6 +61,6 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.active;
     }
 }

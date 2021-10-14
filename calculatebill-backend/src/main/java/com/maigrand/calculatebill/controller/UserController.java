@@ -1,9 +1,9 @@
 package com.maigrand.calculatebill.controller;
 
 import com.maigrand.calculatebill.entity.UserEntity;
-import com.maigrand.calculatebill.payload.user.AuthenticationCredentials;
-import com.maigrand.calculatebill.payload.user.AuthenticationTokenDetails;
+import com.maigrand.calculatebill.payload.user.*;
 import com.maigrand.calculatebill.security.JwtTokenProvider;
+import com.maigrand.calculatebill.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,8 @@ public class UserController {
 
     private final JwtTokenProvider tokenProvider;
 
+    private final UserService userService;
+
     @GetMapping
     @ApiOperation(value = "Получить текущего пользователя (по token в header)")
     public ResponseEntity<UserEntity> currentUser(@ApiIgnore @AuthenticationPrincipal UserEntity userEntity) {
@@ -47,5 +49,12 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.generateToken(authentication, true);
         return ResponseEntity.ok(new AuthenticationTokenDetails(token));
+    }
+
+    @PostMapping("/sign-up")
+    @ApiOperation(value = "Регистрация")
+    public ResponseEntity<UserEntity> register(@RequestBody UserDetails details) {
+        UserEntity userEntity = this.userService.create(details);
+        return ResponseEntity.ok(userEntity);
     }
 }
