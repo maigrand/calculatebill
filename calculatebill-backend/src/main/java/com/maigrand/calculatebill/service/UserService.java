@@ -36,6 +36,7 @@ public class UserService implements UserDetailsService {
 
         entity.setEmail(email);
         entity.setPassword(this.passwordEncoder.encode(password));
+        entity.setActive(active);
 
         return this.userRepository.save(entity);
     }

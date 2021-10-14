@@ -4,6 +4,7 @@ import com.maigrand.calculatebill.entity.UserEntity;
 import com.maigrand.calculatebill.payload.user.*;
 import com.maigrand.calculatebill.security.JwtTokenProvider;
 import com.maigrand.calculatebill.service.UserService;
+import com.maigrand.calculatebill.view.user.UserView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -53,8 +54,8 @@ public class UserController {
 
     @PostMapping("/sign-up")
     @ApiOperation(value = "Регистрация")
-    public ResponseEntity<UserEntity> register(@RequestBody UserDetails details) {
+    public ResponseEntity<UserView> register(@RequestBody UserDetails details) {
         UserEntity userEntity = this.userService.create(details);
-        return ResponseEntity.ok(userEntity);
+        return ResponseEntity.ok(new UserView(userEntity));
     }
 }
