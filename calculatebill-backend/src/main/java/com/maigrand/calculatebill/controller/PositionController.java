@@ -6,6 +6,7 @@ import com.maigrand.calculatebill.service.PositionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +27,11 @@ public class PositionController {
         return ResponseEntity.ok(all);
     }
 
-    //todo: return 201
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Добавить позицию")
-    public ResponseEntity<PositionEntity> create(PositionDetails details) {
+    public ResponseEntity<PositionEntity> create(@RequestBody PositionDetails details) {
         PositionEntity entity = this.positionService.create(details);
-        return ResponseEntity.ok(entity);
+        return ResponseEntity.status(HttpStatus.CREATED).body(entity);
     }
 }

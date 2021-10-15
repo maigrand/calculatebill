@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class PositionService {
     }
 
     @Validated(OnCreate.class)
-    public PositionEntity create(PositionDetails details) {
+    public PositionEntity create(@Valid PositionDetails details) {
         if (this.positionRepository.existsByName(details.getName())) {
             throw new EntityExistsException("position exists");
         }
