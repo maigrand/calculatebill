@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface MemberRepository extends MongoRepository<MemberEntity, String> {
 
     boolean existsByName(String name);
+
     Optional<MemberEntity> findByName(String name);
 }
