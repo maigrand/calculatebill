@@ -1,6 +1,7 @@
 package com.maigrand.calculatebill.service;
 
 import com.maigrand.calculatebill.entity.MemberEntity;
+import com.maigrand.calculatebill.entity.PositionEntity;
 import com.maigrand.calculatebill.exception.EntityExistsException;
 import com.maigrand.calculatebill.exception.EntityNotFoundException;
 import com.maigrand.calculatebill.payload.MemberDetails;
@@ -11,15 +12,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Validated
 @RequiredArgsConstructor
 public class MemberService {
 
+    private final PositionService positionService;
+
     private final MemberRepository memberRepository;
+
+    public MemberEntity findById(String id) {
+        return this.memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("member not found"));
+    }
 
     public List<MemberEntity> findAll() {
         return this.memberRepository.findAll();
@@ -37,7 +45,12 @@ public class MemberService {
         }
         MemberEntity entity = new MemberEntity();
 
+        Set<PositionEntity> positions = details.getPositions().stream()
+                .map(this.positionService::findByName)
+                .collect(Collectors.toSet());
+
         entity.setName(details.getName());
+        entity.setPositions(positions);
 
         return this.memberRepository.save(entity);
     }
@@ -60,5 +73,9 @@ public class MemberService {
         } else {
             throw new EntityNotFoundException("member not found");
         }
+    }
+
+    public MemberEntity save(MemberEntity memberEntity){
+        return this.memberRepository.save(memberEntity);
     }
 }

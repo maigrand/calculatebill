@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PositionController {
 
-    private final PositionService positionService;
+    /*private final PositionService positionService;
 
     @GetMapping
     @ApiOperation(value = "Получить все позиции")
@@ -33,5 +33,5 @@ public class PositionController {
     public ResponseEntity<PositionEntity> create(@RequestBody PositionDetails details) {
         PositionEntity entity = this.positionService.create(details);
         return ResponseEntity.status(HttpStatus.CREATED).body(entity);
-    }
+    }*/
 }

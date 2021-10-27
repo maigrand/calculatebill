@@ -2,10 +2,11 @@ package com.maigrand.calculatebill.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.*;
 
-@Document(collection = "memberPositionRelation")
+import java.util.*;
+
+@Document(collection = "bill")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,9 +17,28 @@ public class BillEntity {
     @Setter(AccessLevel.NONE)
     private String id;
 
-    @DBRef
-    private MemberEntity member;
+    private String name;
+
+    @Field(value = "date")
+    @Setter(AccessLevel.NONE)
+    private Date date = new Date();
+
+    private Integer tips;
+
+    @Field(value = "total_cost")
+    private Float totalCost;
 
     @DBRef
-    private PositionEntity position;
+    private Set<MemberEntity> members = new HashSet<>();
+
+    @DBRef
+    private Set<PositionEntity> positions = new HashSet<>();
+
+    public void addMember(MemberEntity memberEntity) {
+        this.members.add(memberEntity);
+    }
+
+    public void addPosition(PositionEntity positionEntity) {
+        this.positions.add(positionEntity);
+    }
 }
