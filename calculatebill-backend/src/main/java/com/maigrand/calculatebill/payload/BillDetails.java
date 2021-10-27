@@ -9,10 +9,12 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Data
-public class MemberDetails {
+public class BillDetails {
 
     @NotNull(message = "{name.not_null}", groups = OnCreate.class)
     private String name;
 
-    private Set<String> positions;
+    private Integer tips;
+
+    private Set<String> memberNames;
 }
