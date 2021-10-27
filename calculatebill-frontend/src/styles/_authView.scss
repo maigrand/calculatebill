@@ -16,26 +16,36 @@
   padding: 20px 10px;
   border-radius: 15px;
 
-  background: mediumpurple;
-
   > header {
     > h2 {
+      text-align: center;
       color: white;
     }
   }
 
+  &-desc {
+    color: white;
+    text-align: center;
+  }
+
   > main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     margin-bottom: 20px;
     > div {
       display: flex;
-      flex-direction: column;
+      flex-direction: column-reverse;
+      justify-content: center;
+      align-items: center;
       margin: 10px 0;
-      width: 100%;
+      width: 80%;
 
       > label {
-        color: white;
+        color: dimgray;
         margin: 0 0 5px 10px;
+        align-self: start;
       }
 
       > input {
@@ -43,29 +53,61 @@
         height: 40px;
         padding: 0 10px;
         border: transparent;
-        border-radius: 10px;
+        border-radius: 5px;
 
         transition: 200ms ease;
-
-        &:focus {
-          transition: 200ms ease;
-          border: 1px solid black;
-        }
-
-        &:not(:focus) {
-          transition: 200ms ease;
-        }
+        background: dimgray;
+        color: white;
+        font-weight: 700;
       }
     }
   }
 
   footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     > button {
       padding: 10px 25px;
       border: transparent;
       border-radius: 10px;
+      background: mediumpurple;
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
   }
 }
 
+.auth-view__input {
+  &-container {
+    > input:focus + label {
+      color: mediumpurple;
+      transition: 300ms ease;
+    }
+
+    > input:focus {
+      border: 1px solid mediumpurple;
+      transition: 300ms ease;
+    }
+
+    > input::placeholder {
+      color: darkgray;
+    }
+  }
+}
+
+.auth-view__footer-link {
+  > span {
+    color: white;
+    margin: 0 5px;
+  }
+
+  > a {
+    color: mediumpurple;
+    text-decoration: none;
+  }
+}
 

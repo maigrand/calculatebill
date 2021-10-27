@@ -1,44 +1,45 @@
-import React from 'react'
+import { lazy, Suspense } from 'react'
 import {useSelector} from "react-redux";
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Redirect,
-} from "react-router-dom"
+} from "react-router-dom";
 
-import AuthView from "../views/AuthView"
-import HomeView from "../views/HomeView"
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
+import ProtectedRoute from "./ProtectedRoute";
+import Loader from "./Loader";
 
-function AuthRoutes() {
-    return (
-        <Route exact path='/auth'>
-            <AuthView />
-        </Route>
-    )
-}
+const AuthView = lazy(() => import('../views/AuthView'));
+const RegisterView = lazy(() => import('../views/RegisterView'));
 
-function UserRoutes() {
-    return (
-        <Route exact path='/home'>
-            <HomeView />
-        </Route>
-    )
-}
+const HomeView = lazy(() => import('../views/HomeView'));
+const PartyView = lazy(() => import('../views/PartyView'));
 
 export default function Routes() {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
-    console.log(isAuthenticated)
-
     return (
         <Router>
-            <Switch>
-                <Route path='/'>
-                    { !isAuthenticated ? <Redirect to='/auth' /> : <Redirect to='/home' /> }
-                </Route>
-                { !isAuthenticated ? <AuthRoutes /> : <UserRoutes /> }
-            </Switch>
+            <Suspense fallback={<Loader />}>
+                <Switch>
+                    <PublicRoute path='/login' isAuthenticated={isAuthenticated}>
+                        <AuthView />
+                    </PublicRoute>
+                    <PublicRoute path='/register' isAuthenticated={isAuthenticated}>
+                        <RegisterView />
+                    </PublicRoute>
+                    <PrivateRoute path='/home' isAuthenticated={isAuthenticated}>
+                        <HomeView />
+                    </PrivateRoute>
+                    <PrivateRoute path='/party'>
+                        <PartyView />
+                    </PrivateRoute>
+                    <PrivateRoute path='/' isAuthenticated={isAuthenticated}>
+                        <ProtectedRoute />
+                    </PrivateRoute>
+                </Switch>
+            </Suspense>
         </Router>
     )
 }

@@ -13,6 +13,30 @@ class AuthService extends BaseService {
         })
     })
 
+    static register = (user) => new Promise((resolve, reject) => {
+        instance.post('/api/v1/user/sign-up', {
+            active: true,
+            email: user.email,
+            password: user.password,
+        }).then((res) => {
+            resolve(res.data);
+        }).catch((err) => {
+            reject(err);
+        })
+    })
+
+    static getUser = (token) => new Promise((resolve, reject) => {
+        instance.get('/api/v1/user', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).then((res) => {
+            resolve(res.data);
+        }).catch((err) => {
+            reject(err);
+        })
+    })
+
     static logout = () => {
         try {
             localStorage.removeItem('token');
@@ -22,4 +46,4 @@ class AuthService extends BaseService {
     }
 }
 
-export default AuthService
+export default AuthService;

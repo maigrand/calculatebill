@@ -1,55 +1,45 @@
-import React, {useState} from 'react'
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login, logout, setUser } from "../store/reducers/user";
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
+
 import AuthService from "../services/AuthService";
 
-import '../styles/_authView.scss'
+import '../styles/_authView.scss';
 
-const AuthView = () => {
+const RegisterView = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const dispatch = useDispatch();
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
-        await AuthService.login({
-            email, password
-        }).then((data) => {
-            localStorage.setItem('token', data.token);
-            dispatch(login());
-        }).catch((e) => {
-            localStorage.removeItem('token');
-            dispatch(logout());
-            console.error(e.message);
-        });
-
-        const token = localStorage.getItem('token');
-
-        await AuthService.getUser(token)
-            .then((data) => {
-                dispatch(setUser(data));
-            })
-            .catch((e) => {
-                localStorage.removeItem('token');
-                dispatch(logout());
-                console.error(e.message);
-            })
-    };
+    const [isConfirmFieldDirty, setConfirmFieldDirty] = useState(false);
 
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
-    }
+    };
 
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     }
 
+    const handleConfirmPassword = (e) => {
+        if (!isConfirmFieldDirty) setConfirmFieldDirty(true);
+        setConfirmPassword(e.target.value);
+    }
+
+    const handleRegister = async (e) => {
+      e.preventDefault();
+
+      try {
+          await AuthService.register({
+              email, password
+          });
+      } catch (e) {
+          console.error(e.message);
+      }
+    };
+
     return (
         <div className='auth-view__container'>
-            <form className="auth-view__block" onSubmit={handleLogin}>
+            <form className="auth-view__block" onSubmit={handleRegister}>
                 <header>
                     <div className="auth-view__block-desc">
                         <h1>
@@ -58,7 +48,7 @@ const AuthView = () => {
                         <p>We create this app for friends, just calculate and chill :)</p>
                     </div>
                     <h2>
-                        Sign in.
+                        Sign up.
                     </h2>
                 </header>
 
@@ -79,18 +69,26 @@ const AuthView = () => {
                             onChange={handleChangePassword} />
                         <label form='password'>Password</label>
                     </div>
+                    <div className='auth-view__input-container'>
+                        <input
+                            type="password"
+                            id='confirm-password'
+                            placeholder="Enter your password"
+                            onChange={handleConfirmPassword} />
+                        <label form='confirm-password'>Confirm password</label>
+                    </div>
                 </main>
 
                 <footer>
-                    <button type='submit'>Log in</button>
+                    <button type='submit'>Sign up</button>
                     <div className='auth-view__footer-link'>
-                        <span>Don't have account?</span>
-                        <Link to='/register'>Sign up!</Link>
+                        <span>Already have account?</span>
+                        <Link to='/login'>Sign in!</Link>
                     </div>
                 </footer>
             </form>
         </div>
-    )
+    );
 }
 
-export default AuthView;
+export default RegisterView;

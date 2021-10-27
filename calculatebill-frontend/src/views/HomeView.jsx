@@ -1,11 +1,18 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+
+import '../styles/_userView.scss';
 
 const HomeView = () => {
+    const user = useSelector((state) => state.user.data);
+
     return (
-        <div>
-            <h1>Home View</h1>
+        <div className="home-view__container">
+            <div className="home-view__wrapper">
+                { user.username ? <h1>{ user.username }</h1> : '' }
+            </div>
         </div>
     )
 }
 
-export default HomeView
+export default HomeView;
