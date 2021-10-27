@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Document(collection = "members")
@@ -23,5 +24,9 @@ public class MemberEntity {
     private String name;
 
     @DBRef
-    private Set<PositionEntity> positions;
+    private Set<PositionEntity> positions = new HashSet<>();
+
+    public void addPosition(PositionEntity positionEntity) {
+        this.positions.add(positionEntity);
+    }
 }

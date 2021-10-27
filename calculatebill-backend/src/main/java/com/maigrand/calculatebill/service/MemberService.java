@@ -24,6 +24,11 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    public MemberEntity findById(String id) {
+        return this.memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("member not found"));
+    }
+
     public List<MemberEntity> findAll() {
         return this.memberRepository.findAll();
     }
@@ -68,5 +73,9 @@ public class MemberService {
         } else {
             throw new EntityNotFoundException("member not found");
         }
+    }
+
+    public MemberEntity save(MemberEntity memberEntity){
+        return this.memberRepository.save(memberEntity);
     }
 }

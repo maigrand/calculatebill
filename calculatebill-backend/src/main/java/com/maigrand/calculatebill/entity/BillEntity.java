@@ -4,8 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Document(collection = "bill")
 @Getter
@@ -21,7 +20,8 @@ public class BillEntity {
     private String name;
 
     @Field(value = "date")
-    private Date date;
+    @Setter(AccessLevel.NONE)
+    private Date date = new Date();
 
     private Integer tips;
 
@@ -29,5 +29,16 @@ public class BillEntity {
     private Float totalCost;
 
     @DBRef
-    private Set<MemberEntity> members;
+    private Set<MemberEntity> members = new HashSet<>();
+
+    @DBRef
+    private Set<PositionEntity> positions = new HashSet<>();
+
+    public void addMember(MemberEntity memberEntity) {
+        this.members.add(memberEntity);
+    }
+
+    public void addPosition(PositionEntity positionEntity) {
+        this.positions.add(positionEntity);
+    }
 }

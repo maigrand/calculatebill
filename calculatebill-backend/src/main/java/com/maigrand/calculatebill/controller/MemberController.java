@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    /*private final MemberService memberService;
 
     @GetMapping
     @ApiOperation(value = "Получить всех участников")
@@ -38,5 +38,5 @@ public class MemberController {
     public ResponseEntity<String> delete(@RequestParam("name") String name) {
         this.memberService.delete(name);
         return ResponseEntity.ok("null");
-    }
+    }*/
 }
