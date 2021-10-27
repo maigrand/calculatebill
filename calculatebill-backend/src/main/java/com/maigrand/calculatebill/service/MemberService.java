@@ -1,7 +1,6 @@
 package com.maigrand.calculatebill.service;
 
 import com.maigrand.calculatebill.entity.MemberEntity;
-import com.maigrand.calculatebill.entity.PositionEntity;
 import com.maigrand.calculatebill.exception.EntityExistsException;
 import com.maigrand.calculatebill.exception.EntityNotFoundException;
 import com.maigrand.calculatebill.payload.MemberDetails;
@@ -12,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -45,12 +44,12 @@ public class MemberService {
         }
         MemberEntity entity = new MemberEntity();
 
-        Set<PositionEntity> positions = details.getPositions().stream()
+        /*Set<PositionEntity> positions = details.getPositions().stream()
                 .map(this.positionService::findByName)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());*/
 
         entity.setName(details.getName());
-        entity.setPositions(positions);
+        //entity.setPositions(positions);
 
         return this.memberRepository.save(entity);
     }
@@ -75,7 +74,7 @@ public class MemberService {
         }
     }
 
-    public MemberEntity save(MemberEntity memberEntity){
+    public MemberEntity save(MemberEntity memberEntity) {
         return this.memberRepository.save(memberEntity);
     }
 }

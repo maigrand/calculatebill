@@ -14,5 +14,5 @@ public class MemberDetails {
     @NotNull(message = "{name.not_null}", groups = OnCreate.class)
     private String name;
 
-    private Set<String> positions;
+    //private Set<String> positions;
 }

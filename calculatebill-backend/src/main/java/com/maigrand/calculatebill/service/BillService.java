@@ -38,17 +38,17 @@ public class BillService {
     public BillEntity create(@Valid BillDetails details) {
         BillEntity entity = new BillEntity();
 
-        Set<MemberEntity> memberEntitySet = details.getMemberNames().stream()
+        /*Set<MemberEntity> memberEntitySet = details.getMemberNames().stream()
                 .map(this.memberService::findByName)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet());*/
 
-        Float totalCost = memberEntitySet.stream()
+        /*Float totalCost = memberEntitySet.stream()
                 .flatMap((memberEntity -> memberEntity.getPositions().stream()
-                        .map(PositionEntity::getCost))).reduce(Float::sum).get();
+                        .map(PositionEntity::getCost))).reduce(Float::sum).get();*/
 
-        entity.setMembers(memberEntitySet);
-        entity.setTips(details.getTips());
-        entity.setTotalCost(totalCost);
+        //entity.setMembers(memberEntitySet);
+        //entity.setTips(details.getTips());
+        //entity.setTotalCost(totalCost);
         entity.setName(details.getName());
 
         return entity;
