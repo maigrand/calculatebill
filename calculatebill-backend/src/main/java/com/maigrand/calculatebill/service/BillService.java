@@ -11,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -63,10 +61,17 @@ public class BillService {
 
     public BillEntity addMemberPosition(String id, String memberId, PositionDetails details) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity=this.memberService.findById(memberId);
+        MemberEntity memberEntity = this.memberService.findById(memberId);
         PositionEntity positionEntity = this.positionService.create(details);
         memberEntity.addPosition(positionEntity);
         this.memberService.save(memberEntity);
+        return this.billRepository.save(billEntity);
+    }
+
+    public BillEntity removeMember(String id, String memberId) {
+        BillEntity billEntity = findById(id);
+        MemberEntity memberEntity = this.memberService.findById(memberId);
+        billEntity.removeMember(memberEntity);
         return this.billRepository.save(billEntity);
     }
 }

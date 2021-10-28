@@ -32,6 +32,15 @@ public class BillController {
         return ResponseEntity.ok(entity);
     }
 
+    @DeleteMapping("/{id}/member/{memberId}")
+    @ApiOperation(value = "Удалить участника")
+    public ResponseEntity<BillEntity> removeMember(
+            @PathVariable("id") String id,
+            @PathVariable("memberId") String memberId) {
+        BillEntity entity = this.billService.removeMember(id, memberId);
+        return ResponseEntity.ok(entity);
+    }
+
     @PostMapping("/{id}/member/{memberId}")
     @ApiOperation(value = "Добавить участнику позицию")
     public ResponseEntity<BillEntity> addMemberPosition(

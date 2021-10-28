@@ -41,4 +41,8 @@ public class BillEntity {
     public void addPosition(PositionEntity positionEntity) {
         this.positions.add(positionEntity);
     }
+
+    public void removeMember(MemberEntity memberEntity) {
+        this.members.remove(memberEntity);
+    }
 }
