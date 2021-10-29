@@ -49,7 +49,7 @@ public class BillService {
         //entity.setTotalCost(totalCost);
         entity.setName(details.getName());
 
-        return entity;
+        return this.billRepository.save(entity);
     }
 
     public BillEntity addMember(String id, @Valid MemberDetails details) {
