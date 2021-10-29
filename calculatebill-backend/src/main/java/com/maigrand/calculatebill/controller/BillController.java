@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/bill")
 @Api(tags = "Чек")
@@ -16,6 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class BillController {
 
     private final BillService billService;
+
+    @GetMapping
+    @ApiOperation(value = "Получить список")
+    public ResponseEntity<List<BillEntity>> list() {
+        List<BillEntity> entity = this.billService.findAll();
+        return ResponseEntity.ok(entity);
+    }
 
     @PostMapping
     @ApiOperation(value = "Создать чек")
@@ -27,7 +36,7 @@ public class BillController {
 
     @PostMapping("/{id}/member")
     @ApiOperation(value = "Добавить участника")
-    public ResponseEntity<BillEntity> addMember(@PathVariable("id") String id,@RequestBody MemberDetails details) {
+    public ResponseEntity<BillEntity> addMember(@PathVariable("id") String id, @RequestBody MemberDetails details) {
         BillEntity entity = this.billService.addMember(id, details);
         return ResponseEntity.ok(entity);
     }
@@ -46,7 +55,7 @@ public class BillController {
     public ResponseEntity<BillEntity> addMemberPosition(
             @PathVariable("id") String id,
             @PathVariable("memberId") String memberId,
-            @RequestBody PositionDetails details){
+            @RequestBody PositionDetails details) {
         BillEntity entity = this.billService.addMemberPosition(id, memberId, details);
         return ResponseEntity.ok(entity);
     }
