@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import BillService from "../../services/BillService";
 
 import "../../styles/_createBillView.scss";
-import DefaultInput from "../../components/ui/DefaultInput";
+import DefaultInput from "../../components/ui/DefaultInput.jsx";
 
 const CreateBillView = () => {
     const [billName, setBillName] = useState('');

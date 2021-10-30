@@ -7,20 +7,20 @@ import {
 
 import AuthService from "../services/AuthService";
 
-import PrivateRoute from "./PrivateRoute";
-import PublicRoute from "./PublicRoute";
-import ProtectedRoute from "./ProtectedRoute";
-import Loader from "./Loader";
+import PrivateRoute from "./PrivateRoute.jsx";
+import PublicRoute from "./PublicRoute.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
+import Loader from "./Loader.jsx";
 import { login, setUser } from "../store/reducers/user";
 
-const AuthView = lazy(() => import('../views/AuthView'));
-const RegisterView = lazy(() => import('../views/RegisterView'));
+const AuthView = lazy(() => import('../views/AuthView.jsx'));
+const RegisterView = lazy(() => import('../views/RegisterView.jsx'));
 
-const HomeView = lazy(() => import('../views/HomeView'));
+const HomeView = lazy(() => import('../views/HomeView.jsx'));
 
-const BillView = lazy(() => import('../views/BillViews/BillView'));
-const MyBillsView = lazy(() => import('../views/BillViews/MyBillsView'));
-const CreateBillView = lazy(() => import('../views/BillViews/CreateBillView'));
+const BillView = lazy(() => import('../views/BillViews/BillView.jsx'));
+const MyBillsView = lazy(() => import('../views/BillViews/MyBillsView.jsx'));
+const CreateBillView = lazy(() => import('../views/BillViews/CreateBillView.jsx'));
 
 export default function Routes() {
     const dispatch = useDispatch();

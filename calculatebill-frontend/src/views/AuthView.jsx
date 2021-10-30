@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, logout, setUser } from "../store/reducers/user";
 
-import EmailInput from "../components/ui/EmailInput";
+import EmailInput from "../components/ui/EmailInput.jsx";
 
 import AuthService from "../services/AuthService";
 
-import PasswordInput from "../components/ui/PasswordInput";
+import PasswordInput from "../components/ui/PasswordInput.jsx";
 
 import '../styles/_authView.scss';
 

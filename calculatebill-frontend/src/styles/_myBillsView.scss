@@ -1,0 +1,9 @@
+@import "mixins/formMixin";
+
+.form {
+  &__wrapper {
+    > main {
+      width: 100%;
+    }
+  }
+}

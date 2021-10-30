@@ -13,7 +13,7 @@ class BillService extends BaseService {
     });
 
     static addMemberToBill = (data, id) => new Promise((resolve, reject) => {
-       instance.post(`/api/v1/bill/${id}/member`, {
+       instance.post(`/api/v1/bill/${id}/guest`, {
            name: data.name,
        }).then((res) => {
            resolve(res.data);
@@ -23,7 +23,7 @@ class BillService extends BaseService {
     });
 
     static addPositionToMember = (data, id, memberId) => new Promise((resolve, reject) => {
-        instance(`/api/v1/bill/${id}/member/${memberId}`, {
+        instance(`/api/v1/bill/${id}/guest/${memberId}`, {
             cost: data.cost,
             name: data.name,
         }).then((res) => {
@@ -35,6 +35,26 @@ class BillService extends BaseService {
 
     static deleteMemberFromBill = (id, memberId) => new Promise((resolve, reject) => {
         instance.delete(`/api/v1/bill/${id}/member/${memberId}`)
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+
+    static getBillsList = () => new Promise((resolve, reject) => {
+        instance.get('/api/v1/bill')
+            .then((res) => {
+                resolve(res.data);
+            })
+            .catch((error) => {
+                reject(error);
+            })
+    })
+
+    static getBill = (id) => new Promise((resolve, reject) => {
+        instance.get(`/api/v1/bill/${id}`)
             .then((res) => {
                 resolve(res.data);
             })

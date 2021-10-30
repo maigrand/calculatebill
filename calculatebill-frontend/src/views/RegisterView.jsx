@@ -3,8 +3,8 @@ import {Link} from "react-router-dom";
 
 import AuthService from "../services/AuthService";
 
-import EmailInput from "../components/ui/EmailInput";
-import PasswordInput from "../components/ui/PasswordInput";
+import EmailInput from "../components/ui/EmailInput.jsx";
+import PasswordInput from "../components/ui/PasswordInput.jsx";
 
 import "../styles/_authView.scss";
 

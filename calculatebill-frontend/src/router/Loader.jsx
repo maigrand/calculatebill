@@ -1,9 +1,17 @@
 import React from "react";
 
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+
+import "../styles/ui/_loaderComp.scss";
+
 const Loader = () => {
     return (
-        <div>
-            <h1>Loading</h1>
+        <div className="form__container">
+            <div className="form__wrapper loader">
+                <FontAwesomeIcon icon={faSpinner} size="2x" color="white" />
+                <p>Loading</p>
+            </div>
         </div>
     )
 }
