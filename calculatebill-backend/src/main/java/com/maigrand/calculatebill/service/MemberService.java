@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,18 +45,13 @@ public class MemberService {
         }
         MemberEntity entity = new MemberEntity();
 
-        /*Set<PositionEntity> positions = details.getPositions().stream()
-                .map(this.positionService::findByName)
-                .collect(Collectors.toSet());*/
-
         entity.setName(details.getName());
-        //entity.setPositions(positions);
 
         return this.memberRepository.save(entity);
     }
 
     @Validated(OnUpdate.class)
-    public MemberEntity update(MemberDetails details) {
+    public MemberEntity update(@Valid MemberDetails details) {
         if (!this.memberRepository.existsByName(details.getName())) {
             throw new EntityNotFoundException("member not found");
         }
@@ -76,5 +72,16 @@ public class MemberService {
 
     public MemberEntity save(MemberEntity memberEntity) {
         return this.memberRepository.save(memberEntity);
+    }
+
+    public MemberEntity findByNameOrCreate(@Valid MemberDetails details) {
+        Optional<MemberEntity> optionalMemberEntity = this.memberRepository.findByName(details.getName());
+        if (optionalMemberEntity.isPresent()) {
+            return optionalMemberEntity.get();
+        } else {
+            MemberEntity entity = new MemberEntity();
+            entity.setName(details.getName());
+            return this.memberRepository.save(entity);
+        }
     }
 }

@@ -20,9 +20,16 @@ public class BillController {
     private final BillService billService;
 
     @GetMapping
-    @ApiOperation(value = "Получить список")
+    @ApiOperation(value = "Получить все чеки")
     public ResponseEntity<List<BillEntity>> list() {
         List<BillEntity> entity = this.billService.findAll();
+        return ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Получить чек по id")
+    public ResponseEntity<BillEntity> show(@PathVariable("id") String id) {
+        BillEntity entity = this.billService.findById(id);
         return ResponseEntity.ok(entity);
     }
 
@@ -57,6 +64,13 @@ public class BillController {
             @PathVariable("memberId") String memberId,
             @RequestBody PositionDetails details) {
         BillEntity entity = this.billService.addMemberPosition(id, memberId, details);
+        return ResponseEntity.ok(entity);
+    }
+
+    @GetMapping("/{id}/calculate")
+    @ApiOperation(value = "Подсчитать")
+    public ResponseEntity<BillEntity> calculate(@PathVariable("id") String id) {
+        BillEntity entity = this.billService.calculate(id);
         return ResponseEntity.ok(entity);
     }
 }

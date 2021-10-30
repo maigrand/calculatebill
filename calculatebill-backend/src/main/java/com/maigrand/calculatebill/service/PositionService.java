@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Validated
@@ -40,5 +41,17 @@ public class PositionService {
         entity.setCost(details.getCost());
 
         return this.positionRepository.save(entity);
+    }
+
+    public PositionEntity findByNameOrCreate(@Valid PositionDetails details) {
+        Optional<PositionEntity> optionalPositionEntity = this.positionRepository.findByName(details.getName());
+        if (optionalPositionEntity.isPresent()) {
+            return optionalPositionEntity.get();
+        } else {
+            PositionEntity entity = new PositionEntity();
+            entity.setName(details.getName());
+            entity.setCost(details.getCost());
+            return this.positionRepository.save(entity);
+        }
     }
 }

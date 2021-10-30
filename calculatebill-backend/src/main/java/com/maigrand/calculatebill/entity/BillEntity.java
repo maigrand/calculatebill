@@ -1,5 +1,6 @@
 package com.maigrand.calculatebill.entity;
 
+import com.maigrand.calculatebill.payload.BillMemberPojo;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
@@ -28,21 +29,20 @@ public class BillEntity {
     @Field(value = "total_cost")
     private Float totalCost;
 
-    @DBRef
-    private Set<MemberEntity> members = new HashSet<>();
+    private Set<BillMemberPojo> billMemberPojoSet = new HashSet<>();
 
     @DBRef
-    private Set<PositionEntity> positions = new HashSet<>();
+    private Set<MemberEntity> members = new HashSet<>();
 
     public void addMember(MemberEntity memberEntity) {
         this.members.add(memberEntity);
     }
 
-    public void addPosition(PositionEntity positionEntity) {
-        this.positions.add(positionEntity);
-    }
-
     public void removeMember(MemberEntity memberEntity) {
         this.members.remove(memberEntity);
+    }
+
+    public void addBillMemberPojo(BillMemberPojo billMemberPojo) {
+        this.billMemberPojoSet.add(billMemberPojo);
     }
 }
