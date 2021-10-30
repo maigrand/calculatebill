@@ -3,26 +3,36 @@ import {Link} from "react-router-dom";
 
 import AuthService from "../services/AuthService";
 
-import '../styles/_authView.scss';
+import EmailInput from "../components/ui/EmailInput";
+import PasswordInput from "../components/ui/PasswordInput";
+
+import "../styles/_authView.scss";
 
 const RegisterView = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [state, setState] = useState({
+       email: '',
+       password: '',
+       confirmPassword: '',
+    });
 
     const [isConfirmFieldDirty, setConfirmFieldDirty] = useState(false);
 
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
+    const handleChangeEmail = (value) => {
+        setState(prevState => {
+            return { ...prevState, email: value };
+        })
     };
 
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
+    const handleChangePassword = (value) => {
+        setState(prevState => {
+            return { ...prevState, password: value };
+        })
     }
 
-    const handleConfirmPassword = (e) => {
-        if (!isConfirmFieldDirty) setConfirmFieldDirty(true);
-        setConfirmPassword(e.target.value);
+    const handleConfirmPassword = (value) => {
+        setState(prevState => {
+            return { ...prevState, confirmPassword: value };
+        })
     }
 
     const handleRegister = async (e) => {
@@ -30,7 +40,7 @@ const RegisterView = () => {
 
       try {
           await AuthService.register({
-              email, password
+              email: state.email, password: state.password
           });
       } catch (e) {
           console.error(e.message);
@@ -38,8 +48,8 @@ const RegisterView = () => {
     };
 
     return (
-        <div className='auth-view__container'>
-            <form className="auth-view__block" onSubmit={handleRegister}>
+        <div className='form__container'>
+            <form className="form__wrapper" onSubmit={handleRegister}>
                 <header>
                     <div className="auth-view__block-desc">
                         <h1>
@@ -53,30 +63,21 @@ const RegisterView = () => {
                 </header>
 
                 <main>
-                    <div className='auth-view__input-container'>
-                        <input
-                            type="email"
-                            id='email'
-                            placeholder="Enter your email"
-                            onChange={handleChangeEmail} />
-                        <label form='email'>Email</label>
-                    </div>
-                    <div className='auth-view__input-container'>
-                        <input
-                            type="password"
-                            id='password'
-                            placeholder="Enter your password"
-                            onChange={handleChangePassword} />
-                        <label form='password'>Password</label>
-                    </div>
-                    <div className='auth-view__input-container'>
-                        <input
-                            type="password"
-                            id='confirm-password'
-                            placeholder="Enter your password"
-                            onChange={handleConfirmPassword} />
-                        <label form='confirm-password'>Confirm password</label>
-                    </div>
+                    <EmailInput
+                        placeholder="Enter your email"
+                        label="Email"
+                        onchange={(value) => handleChangeEmail(value)}
+                    />
+                    <PasswordInput
+                        placeholder="Enter your password"
+                        label="Password"
+                        onchange={(value) => handleChangePassword(value)}
+                    />
+                    <PasswordInput
+                        placeholder="Confirm your password"
+                        label="Confirm password"
+                        onchange={(value) => handleConfirmPassword(value)}
+                    />
                 </main>
 
                 <footer>

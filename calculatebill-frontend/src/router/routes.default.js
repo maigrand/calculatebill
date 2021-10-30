@@ -7,8 +7,8 @@ const routes = [
         exact: true,
     },
     {
-        path: 'party',
-        component: lazy(() => import('../views/PartyView')),
+        path: 'bill',
+        component: lazy(() => import('../views/BillViews/BillView')),
         exact: true,
     }
 ];

@@ -1,0 +1,42 @@
+.input {
+  &__container {
+    display: flex;
+    flex-direction: column-reverse;
+
+    width: 100%;
+
+    margin-bottom: 10px;
+
+    > input {
+      padding: 10px 5px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      background: #484848;
+
+      color: darkgray;
+      font-weight: 600;
+
+      transition: 200ms ease;
+
+      &::placeholder {
+        color: darkgray;
+      }
+    }
+
+    > input:focus + label {
+      color: mediumpurple;
+      transition: 200ms ease-in-out;
+    }
+
+    > input:focus {
+      border: 1px solid mediumpurple;
+      transition: 200ms ease;
+    }
+
+    > label {
+      margin-bottom: 5px;
+      color: darkgray;
+      transition: 200ms ease;
+    }
+  }
+}

@@ -2,13 +2,19 @@ import React, {useState} from 'react'
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, logout, setUser } from "../store/reducers/user";
+
+import EmailInput from "../components/ui/EmailInput";
+
 import AuthService from "../services/AuthService";
 
-import '../styles/_authView.scss'
+import PasswordInput from "../components/ui/PasswordInput";
+
+import '../styles/_authView.scss';
 
 const AuthView = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [state, setState] = useState({
+        email: '', password: '',
+    })
 
     const dispatch = useDispatch();
 
@@ -16,7 +22,8 @@ const AuthView = () => {
         e.preventDefault();
 
         await AuthService.login({
-            email, password
+            email: state.email,
+            password: state.password
         }).then((data) => {
             localStorage.setItem('token', data.token);
             dispatch(login());
@@ -39,22 +46,26 @@ const AuthView = () => {
             })
     };
 
-    const handleChangeEmail = (e) => {
-        setEmail(e.target.value);
-    }
+    const handleChangeEmail = (value) => {
+        setState(prevState => {
+           return { ...prevState, email: value };
+        });
+    };
 
-    const handleChangePassword = (e) => {
-        setPassword(e.target.value);
+    const handleChangePassword = (value) => {
+        setState(prevState => {
+            return { ...prevState, password: value };
+        })
     }
 
     return (
-        <div className='auth-view__container'>
-            <form className="auth-view__block" onSubmit={handleLogin}>
+        <div className='form__container'>
+            <form className="form__wrapper" onSubmit={handleLogin}>
                 <header>
                     <div className="auth-view__block-desc">
-                        <h1>
+                        <strong>
                             Calculate your bill with friends faster!
-                        </h1>
+                        </strong>
                         <p>We create this app for friends, just calculate and chill :)</p>
                     </div>
                     <h2>
@@ -63,22 +74,16 @@ const AuthView = () => {
                 </header>
 
                 <main>
-                    <div className='auth-view__input-container'>
-                        <input
-                            type="email"
-                            id='email'
-                            placeholder="Enter your email"
-                            onChange={handleChangeEmail} />
-                        <label form='email'>Email</label>
-                    </div>
-                    <div className='auth-view__input-container'>
-                        <input
-                            type="password"
-                            id='password'
-                            placeholder="Enter your password"
-                            onChange={handleChangePassword} />
-                        <label form='password'>Password</label>
-                    </div>
+                    <EmailInput
+                        placeholder="Enter your email"
+                        label="Email"
+                        onchange={(value) => handleChangeEmail(value)}
+                    />
+                    <PasswordInput
+                        placeholder="Enter your password"
+                        label="Password"
+                        onchange={(value) => handleChangePassword(value) }
+                    />
                 </main>
 
                 <footer>
