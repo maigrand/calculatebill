@@ -9,13 +9,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Document(collection = "members")
+@Document(collection = "guests")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class MemberEntity {
+public class GuestEntity {
 
     @Id
     @Setter(AccessLevel.NONE)

@@ -18,7 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class BillService {
 
-    private final MemberService memberService;
+    private final GuestService guestService;
 
     private final PositionService positionService;
 
@@ -51,33 +51,33 @@ public class BillService {
         return this.billRepository.save(entity);
     }
 
-    public BillEntity addMember(String id, @Valid MemberDetails details) {
+    public BillEntity addGuest(String id, @Valid GuestDetails details) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity = this.memberService.findByNameOrCreate(details);
-        billEntity.addMember(memberEntity);
+        GuestEntity guestEntity = this.guestService.findByNameOrCreate(details);
+        billEntity.addGuest(guestEntity);
         return this.billRepository.save(billEntity);
     }
 
-    public BillEntity addMemberPosition(String id, String memberId, @Valid PositionDetails details) {
+    public BillEntity addGuestPosition(String id, String guestId, @Valid PositionDetails details) {
         BillEntity billEntity = findById(id);
 
         PositionEntity positionEntity = this.positionService.findByNameOrCreate(details);
 
-        MemberEntity memberEntity = this.memberService.findById(memberId);
-        memberEntity.addPosition(positionEntity);
-        memberEntity = this.memberService.save(memberEntity);
+        GuestEntity guestEntity = this.guestService.findById(guestId);
+        guestEntity.addPosition(positionEntity);
+        guestEntity = this.guestService.save(guestEntity);
 
-        billEntity.removeMember(memberEntity);
-        billEntity.addMember(memberEntity);
+        billEntity.removeGuest(guestEntity);
+        billEntity.addGuest(guestEntity);
         billEntity = this.billRepository.save(billEntity);
 
         return billEntity;
     }
 
-    public BillEntity removeMember(String id, String memberId) {
+    public BillEntity removeGuest(String id, String guestId) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity = this.memberService.findById(memberId);
-        billEntity.removeMember(memberEntity);
+        GuestEntity guestEntity = this.guestService.findById(guestId);
+        billEntity.removeGuest(guestEntity);
         return this.billRepository.save(billEntity);
     }
 
@@ -85,29 +85,29 @@ public class BillService {
         BillEntity billEntity = findById(id);
         Set<BillMemberPojo> billMemberPojoList = new HashSet<>();
 
-        Float totalCost = billEntity.getMembers().stream()
-                .flatMap(memberEntity -> memberEntity.getPositions().stream()
+        Float totalCost = billEntity.getGuests().stream()
+                .flatMap(guestEntity -> guestEntity.getPositions().stream()
                         .map(PositionEntity::getCost)).reduce(Float::sum).get();
 
         totalCost = totalCost + (totalCost * billEntity.getTips() / 100);
 
-        for (MemberEntity member : billEntity.getMembers()) {
-            Float cost = member.getPositions().stream()
+        for (GuestEntity guest : billEntity.getGuests()) {
+            Float cost = guest.getPositions().stream()
                     .map(PositionEntity::getCost)
                     .reduce(Float::sum).get();
 
-            member.setPositions(new ArrayList<>());
-            this.memberService.save(member);
+            guest.setPositions(new ArrayList<>());
+            this.guestService.save(guest);
 
             BillMemberPojo billMemberPojo = new BillMemberPojo();
-            billMemberPojo.setMemberName(member.getName());
+            billMemberPojo.setMemberName(guest.getName());
             billMemberPojo.setCost(cost + (cost * billEntity.getTips() / 100));
             billMemberPojoList.add(billMemberPojo);
         }
 
         billEntity.setBillMemberPojoSet(billMemberPojoList);
         billEntity.setTotalCost(totalCost);
-        billEntity.setMembers(new HashSet<>());
+        billEntity.setGuests(new HashSet<>());
         this.billRepository.save(billEntity);
 
         return billEntity;

@@ -41,29 +41,29 @@ public class BillController {
         return ResponseEntity.ok(entity);
     }
 
-    @PostMapping("/{id}/member")
-    @ApiOperation(value = "Добавить участника")
-    public ResponseEntity<BillEntity> addMember(@PathVariable("id") String id, @RequestBody MemberDetails details) {
-        BillEntity entity = this.billService.addMember(id, details);
+    @PostMapping("/{id}/guest")
+    @ApiOperation(value = "Добавить гостя")
+    public ResponseEntity<BillEntity> addGuest(@PathVariable("id") String id, @RequestBody GuestDetails details) {
+        BillEntity entity = this.billService.addGuest(id, details);
         return ResponseEntity.ok(entity);
     }
 
-    @DeleteMapping("/{id}/member/{memberId}")
-    @ApiOperation(value = "Удалить участника")
-    public ResponseEntity<BillEntity> removeMember(
+    @DeleteMapping("/{id}/guest/{guestId}")
+    @ApiOperation(value = "Удалить гостя")
+    public ResponseEntity<BillEntity> removeGuest(
             @PathVariable("id") String id,
-            @PathVariable("memberId") String memberId) {
-        BillEntity entity = this.billService.removeMember(id, memberId);
+            @PathVariable("guestId") String guestId) {
+        BillEntity entity = this.billService.removeGuest(id, guestId);
         return ResponseEntity.ok(entity);
     }
 
-    @PostMapping("/{id}/member/{memberId}")
-    @ApiOperation(value = "Добавить участнику позицию")
-    public ResponseEntity<BillEntity> addMemberPosition(
+    @PostMapping("/{id}/guest/{guestId}")
+    @ApiOperation(value = "Добавить гостю позицию")
+    public ResponseEntity<BillEntity> addGuestPosition(
             @PathVariable("id") String id,
-            @PathVariable("memberId") String memberId,
+            @PathVariable("guestId") String guestId,
             @RequestBody PositionDetails details) {
-        BillEntity entity = this.billService.addMemberPosition(id, memberId, details);
+        BillEntity entity = this.billService.addGuestPosition(id, guestId, details);
         return ResponseEntity.ok(entity);
     }
 

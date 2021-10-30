@@ -32,14 +32,14 @@ public class BillEntity {
     private Set<BillMemberPojo> billMemberPojoSet = new HashSet<>();
 
     @DBRef
-    private Set<MemberEntity> members = new HashSet<>();
+    private Set<GuestEntity> guests = new HashSet<>();
 
-    public void addMember(MemberEntity memberEntity) {
-        this.members.add(memberEntity);
+    public void addGuest(GuestEntity guestEntity) {
+        this.guests.add(guestEntity);
     }
 
-    public void removeMember(MemberEntity memberEntity) {
-        this.members.remove(memberEntity);
+    public void removeGuest(GuestEntity guestEntity) {
+        this.guests.remove(guestEntity);
     }
 
     public void addBillMemberPojo(BillMemberPojo billMemberPojo) {
