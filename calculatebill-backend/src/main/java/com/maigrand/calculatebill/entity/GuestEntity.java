@@ -6,15 +6,16 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-@Document(collection = "members")
+@Document(collection = "guests")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberEntity {
+@EqualsAndHashCode
+public class GuestEntity {
 
     @Id
     @Setter(AccessLevel.NONE)
@@ -24,7 +25,8 @@ public class MemberEntity {
     private String name;
 
     @DBRef
-    private Set<PositionEntity> positions = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    private List<PositionEntity> positions = new ArrayList<>();
 
     public void addPosition(PositionEntity positionEntity) {
         this.positions.add(positionEntity);

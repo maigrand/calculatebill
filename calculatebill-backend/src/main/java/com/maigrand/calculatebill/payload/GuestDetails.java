@@ -9,7 +9,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Data
-public class MemberDetails {
+public class GuestDetails {
 
     @NotNull(message = "{name.not_null}", groups = OnCreate.class)
     private String name;

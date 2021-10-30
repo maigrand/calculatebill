@@ -5,19 +5,20 @@ import com.maigrand.calculatebill.exception.EntityNotFoundException;
 import com.maigrand.calculatebill.payload.*;
 import com.maigrand.calculatebill.repository.BillRepository;
 import com.maigrand.calculatebill.validator.group.OnCreate;
+import com.maigrand.calculatebill.validator.group.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Validated
 @RequiredArgsConstructor
 public class BillService {
 
-    private final MemberService memberService;
+    private final GuestService guestService;
 
     private final PositionService positionService;
 
@@ -36,42 +37,79 @@ public class BillService {
     public BillEntity create(@Valid BillDetails details) {
         BillEntity entity = new BillEntity();
 
-        /*Set<MemberEntity> memberEntitySet = details.getMemberNames().stream()
-                .map(this.memberService::findByName)
-                .collect(Collectors.toSet());*/
-
-        /*Float totalCost = memberEntitySet.stream()
-                .flatMap((memberEntity -> memberEntity.getPositions().stream()
-                        .map(PositionEntity::getCost))).reduce(Float::sum).get();*/
-
-        //entity.setMembers(memberEntitySet);
-        //entity.setTips(details.getTips());
-        //entity.setTotalCost(totalCost);
         entity.setName(details.getName());
+        Optional.ofNullable(details.getTips()).ifPresent(entity::setTips);
 
-        return entity;
+        return this.billRepository.save(entity);
     }
 
-    public BillEntity addMember(String id, @Valid MemberDetails details) {
+    @Validated(OnUpdate.class)
+    public BillEntity update(String id, @Valid BillDetails details) {
+        BillEntity entity = findById(id);
+        Optional.ofNullable(details.getName()).ifPresent(entity::setName);
+        Optional.ofNullable(details.getTips()).ifPresent(entity::setTips);
+        return this.billRepository.save(entity);
+    }
+
+    public BillEntity addGuest(String id, @Valid GuestDetails details) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity = this.memberService.create(details);
-        billEntity.addMember(memberEntity);
+        GuestEntity guestEntity = this.guestService.findByNameOrCreate(details);
+        billEntity.addGuest(guestEntity);
         return this.billRepository.save(billEntity);
     }
 
-    public BillEntity addMemberPosition(String id, String memberId, PositionDetails details) {
+    public BillEntity addGuestPosition(String id, String guestId, @Valid PositionDetails details) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity = this.memberService.findById(memberId);
-        PositionEntity positionEntity = this.positionService.create(details);
-        memberEntity.addPosition(positionEntity);
-        this.memberService.save(memberEntity);
+
+        PositionEntity positionEntity = this.positionService.findByNameOrCreate(details);
+
+        GuestEntity guestEntity = this.guestService.findById(guestId);
+        guestEntity.addPosition(positionEntity);
+        guestEntity = this.guestService.save(guestEntity);
+
+        billEntity.removeGuest(guestEntity);
+        billEntity.addGuest(guestEntity);
+        billEntity = this.billRepository.save(billEntity);
+
+        return billEntity;
+    }
+
+    public BillEntity removeGuest(String id, String guestId) {
+        BillEntity billEntity = findById(id);
+        GuestEntity guestEntity = this.guestService.findById(guestId);
+        billEntity.removeGuest(guestEntity);
         return this.billRepository.save(billEntity);
     }
 
-    public BillEntity removeMember(String id, String memberId) {
+    public BillEntity calculate(String id) {
         BillEntity billEntity = findById(id);
-        MemberEntity memberEntity = this.memberService.findById(memberId);
-        billEntity.removeMember(memberEntity);
-        return this.billRepository.save(billEntity);
+        Set<BillMemberPojo> billMemberPojoList = new HashSet<>();
+
+        Float totalCost = billEntity.getGuests().stream()
+                .flatMap(guestEntity -> guestEntity.getPositions().stream()
+                        .map(PositionEntity::getCost)).reduce(Float::sum).get();
+
+        totalCost = totalCost + (totalCost * billEntity.getTips() / 100);
+
+        for (GuestEntity guest : billEntity.getGuests()) {
+            Float cost = guest.getPositions().stream()
+                    .map(PositionEntity::getCost)
+                    .reduce(Float::sum).get();
+
+            guest.setPositions(new ArrayList<>());
+            this.guestService.save(guest);
+
+            BillMemberPojo billMemberPojo = new BillMemberPojo();
+            billMemberPojo.setMemberName(guest.getName());
+            billMemberPojo.setCost(cost + (cost * billEntity.getTips() / 100));
+            billMemberPojoList.add(billMemberPojo);
+        }
+
+        billEntity.setBillMemberPojoSet(billMemberPojoList);
+        billEntity.setTotalCost(totalCost);
+        billEntity.setGuests(new HashSet<>());
+        this.billRepository.save(billEntity);
+
+        return billEntity;
     }
 }
