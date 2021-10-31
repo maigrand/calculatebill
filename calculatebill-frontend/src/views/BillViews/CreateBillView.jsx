@@ -1,50 +1,51 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useState} from "react";
+import {Link} from "react-router-dom";
 
-import BillService from "../../services/BillService";
-
-import "../../styles/_createBillView.scss";
 import DefaultInput from "../../components/ui/DefaultInput.jsx";
 
-const CreateBillView = () => {
-    const [billName, setBillName] = useState('');
+import {createBill} from "../../store/actions/billActions";
+import {connect} from "react-redux";
 
-    const handleBillName = (value) => {
-        setBillName(value);
-    };
+import "../../styles/_createBillView.scss";
 
-    const handleCreateBill = async (e) => {
-        e.preventDefault();
+const CreateBillView = ({createBill}) => {
+  const [name, setName] = useState('');
 
-        await BillService.createBill({
-            name: billName
-        });
-    };
+  const handleBillName = (value) => setName(value);
 
-    return (
+  const handleCreateBill = async (e) => {
+    e.preventDefault();
+    createBill({name});
+  };
+
+  return (
       <div className="form__container">
-          <form className="form__wrapper" onSubmit={handleCreateBill}>
-              <header>
-                  <strong>Create bill</strong>
-              </header>
+        <form className="form__wrapper" onSubmit={handleCreateBill}>
+          <header>
+            <strong>Create bill</strong>
+          </header>
 
-              <main>
-                  <DefaultInput
-                      placeholder="Enter bill name"
-                      label="Bill name"
-                      onchange={(value) => handleBillName(value)}
-                  />
-              </main>
+          <main>
+            <DefaultInput
+                placeholder="Enter bill name"
+                label="Bill name"
+                onchange={(value) => handleBillName(value)}
+            />
+          </main>
 
-              <footer>
-                  <button>Create</button>
-                  <div className="create-bill__footer-link">
-                      <Link to="/home">Back</Link>
-                  </div>
-              </footer>
-          </form>
+          <footer>
+            <button>Create</button>
+            <div className="create-bill__footer-link">
+              <Link to="/home">Back</Link>
+            </div>
+          </footer>
+        </form>
       </div>
-    );
+  );
 };
 
-export default CreateBillView;
+const mapStateToProps = state => ({
+  error: state.error,
+});
+
+export default connect(mapStateToProps, {createBill})(CreateBillView);

@@ -1,5 +1,5 @@
 import instance from "../../config/axios.config";
-import { returnErrors } from "./errorActions";
+import {returnErrors} from "./errorActions";
 
 import {
   USER_LOADED,

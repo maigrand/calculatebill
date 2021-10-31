@@ -1,31 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
-import { useQuery } from "../../hooks/useQuery";
+import {useQuery} from "../../hooks/useQuery";
 
-import BillService from "../../services/BillService";
+import {loadBill} from "../../store/actions/billActions";
+import {connect} from "react-redux";
 
-const BillView = () => {
-    const [bill, setBill] = useState({});
-    const query = useQuery();
+const BillView = ({loadBill, bill}) => {
+  const query = useQuery();
 
-    useEffect(() => {
-        BillService.getBill(query.get('id'))
-            .then((value) => {
-                setBill(value);
-                console.log(bill);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }, [])
+  useEffect(() => {
+    loadBill(query.get('id'));
+  }, [])
 
-    return (
-        <div className="form__container">
-            <div className="form__wrapper">
-                { bill && (<span>{bill.name}</span>) }
-            </div>
+  return (
+      <div className="form__container">
+        <div className="form__wrapper">
+          {bill && (<span>{bill.name}</span>)}
         </div>
-    );
+      </div>
+  );
 };
 
-export default BillView;
+const mapStateToProps = state => ({
+  bill: state.bill.bill,
+  error: state.error,
+});
+
+export default connect(mapStateToProps, {loadBill})(BillView);
