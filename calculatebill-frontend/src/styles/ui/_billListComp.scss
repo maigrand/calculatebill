@@ -1,0 +1,12 @@
+.bills-list {
+  &__container, &__wrapper {
+    max-height: 450px;
+    width: 100%;
+  }
+}
+
+.block-list {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: scroll;
+}

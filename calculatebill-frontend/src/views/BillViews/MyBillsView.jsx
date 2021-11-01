@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 
-import BillsList from "../../components/ui/bills/BillsList";
+import BillsList from "../../components/bills/BillsList";
 
 import {loadBillsList} from "../../store/actions/billActions";
 import {connect} from "react-redux";
@@ -26,8 +26,8 @@ const MyBillsView = ({loadBillsList, billList, isLoading}) => {
   }, []);
 
   return (
-      <div className="form__container">
-        <div className="form__wrapper">
+      <div className="flex__container">
+        <div className="flex__wrapper column">
           <header>
             <strong>
               My bills

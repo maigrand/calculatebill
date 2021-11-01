@@ -1,7 +1,7 @@
 import React from "react";
 import BillItem from "./BillItem";
 
-import "../../../styles/ui/_billsListComp.scss";
+import "../../styles/ui/_billListComp.scss";
 
 const BillsList = (props) => {
   return (
@@ -11,7 +11,7 @@ const BillsList = (props) => {
             {props.amount && (<strong>Bills amount: {props.amount}</strong>)}
           </header>
 
-          <main>
+          <main className="block-list">
             {props.bills?.map((bill, index) =>
                 <BillItem
                     key={index}

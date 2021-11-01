@@ -1,22 +1,22 @@
 import React from "react";
 
-import "../../styles/ui/_inputComp.scss";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
 
 const EmailInput = (props) => {
-    const handleChange = (event) => {
-      props.onchange(event.target.value);
-    };
-
-    return (
+  const handleChange = (event) => props.onchange(event.target.value);
+  return (
       <div className="input__container">
-          <input
-              type="email"
-              placeholder={props.placeholder}
-              onChange={handleChange}
-          />
-          { props.label && (<label>{props.label}</label>) }
+        <input
+            type="email"
+            placeholder={props.placeholder}
+            onChange={handleChange}
+            required
+        />
+        <FontAwesomeIcon icon={faUser} color="white" />
+        {props.label && (<label>{props.label}</label>)}
       </div>
-    );
+  );
 };
 
 export default EmailInput;

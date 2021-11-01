@@ -1,1 +1,6 @@
-@import "mixins/formMixin";
+@import "mixins/defaultLayout";
+
+header {
+  font-size: 32px;
+  text-align: start !important;
+}

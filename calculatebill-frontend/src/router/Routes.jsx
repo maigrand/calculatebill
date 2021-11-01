@@ -22,6 +22,7 @@ const CreateBillView = lazy(() => import('../views/BillViews/CreateBillView.jsx'
 
 export default function Routes() {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   const setAuth = async () => {
@@ -29,7 +30,7 @@ export default function Routes() {
   };
 
   useEffect(() => {
-    (localStorage.getItem('token') && !isAuthenticated) && setAuth();
+    (token && !isAuthenticated) && setAuth();
   });
 
   return (

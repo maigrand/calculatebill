@@ -1,8 +1,7 @@
 import React from "react";
-
 import { useHistory } from "react-router-dom";
 
-import "../../../styles/ui/_billItemComp.scss";
+import "../../styles/ui/_billItemComp.scss";
 
 const BillItem = (props) => {
     const history = useHistory();

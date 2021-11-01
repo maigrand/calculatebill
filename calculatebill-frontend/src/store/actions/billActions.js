@@ -10,6 +10,12 @@ import {
   BILL_LOADED,
   BILL_FAIL,
   BILL_LIST_FAIL,
+  ADD_MEMBER_TO_BILL_REQUEST,
+  ADD_MEMBER_TO_BILL_SUCCESS,
+  ADD_MEMBER_TO_BILL_FAIL,
+  DELETE_MEMBER_FROM_BILL_FAIL,
+  DELETE_MEMBER_FROM_BILL_SUCCESS,
+  DELETE_MEMBER_FROM_BILL_REQUEST,
 } from "./types";
 
 export const createBill = (data) => (dispatch, getState) => {
@@ -73,6 +79,46 @@ export const loadBillsList = () => (dispatch, getState) => {
         });
       });
 };
+
+export const addMemberToBill = (body, id) => (dispatch, getState) => {
+  dispatch({type: ADD_MEMBER_TO_BILL_REQUEST});
+
+  const config = tokenConfig(getState);
+
+  instance.post(`/api/v1/bill/${id}/guest`, body, config)
+      .then((res) => dispatch({
+        type: ADD_MEMBER_TO_BILL_SUCCESS,
+        payload: res.data
+      }))
+      .catch((error) => {
+        dispatch(
+            returnErrors(error.message, error.response.status, 'ADD_MEMBER_TO_BILL_FAIL')
+        );
+        dispatch({
+          type: ADD_MEMBER_TO_BILL_FAIL,
+        });
+      })
+};
+
+export const deleteMemberFromBill = (body, id, guestId) => (dispatch, getState) => {
+  dispatch({type: DELETE_MEMBER_FROM_BILL_REQUEST});
+
+  const config = tokenConfig(getState);
+
+  instance.post(`/api/v1/bill/${id}/guest/${guestId}`, body, config)
+      .then((res) => dispatch({
+        type: DELETE_MEMBER_FROM_BILL_SUCCESS,
+        payload: res.data
+      }))
+      .catch((error) => {
+        dispatch(
+            returnErrors(error.message, error.response.status, 'DELETE_MEMBER_FROM_BILL_FAIL')
+        );
+        dispatch({
+          type: DELETE_MEMBER_FROM_BILL_FAIL,
+        });
+      })
+}
 
 export const tokenConfig = getState => {
   const token = getState().user.token;

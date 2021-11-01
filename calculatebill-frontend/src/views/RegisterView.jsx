@@ -25,17 +25,11 @@ const RegisterView = ({register}) => {
   };
 
   return (
-      <div className='form__container'>
-        <form className="form__wrapper" onSubmit={handleRegister}>
+      <div className="flex__container">
+        <form className="flex__wrapper column" onSubmit={handleRegister}>
           <header>
-            <div className="auth-view__block-desc">
-              <h1>
-                Calculate your bill with friends faster!
-              </h1>
-              <p>We create this app for friends, just calculate and chill :)</p>
-            </div>
             <h2>
-              Sign up.
+              Sign up to Calculate Bill.
             </h2>
           </header>
 

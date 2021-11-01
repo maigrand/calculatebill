@@ -24,17 +24,11 @@ const AuthView = ({login}) => {
   };
 
   return (
-      <div className='form__container'>
-        <form className="form__wrapper" onSubmit={handleLogin}>
+      <div className='flex__container'>
+        <form className="flex__wrapper column" onSubmit={handleLogin}>
           <header>
-            <div className="auth-view__block-desc">
-              <strong>
-                Calculate your bill with friends faster!
-              </strong>
-              <p>We create this app for friends, just calculate and chill :)</p>
-            </div>
             <h2>
-              Sign in.
+              Sign in to Calculate Bill.
             </h2>
           </header>
 
@@ -42,10 +36,12 @@ const AuthView = ({login}) => {
             <EmailInput
                 placeholder="Enter your email"
                 onchange={(value) => handleChangeEmail(value)}
+                label="Email address"
             />
             <PasswordInput
                 placeholder="Enter your password"
                 onchange={(value) => handleChangePassword(value)}
+                label="Password"
             />
           </main>
 

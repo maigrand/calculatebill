@@ -7,6 +7,12 @@ import {
   BILL_LOADED,
   BILL_FAIL,
   BILL_LIST_FAIL,
+  ADD_MEMBER_TO_BILL_REQUEST,
+  ADD_MEMBER_TO_BILL_SUCCESS,
+  ADD_MEMBER_TO_BILL_FAIL,
+  DELETE_MEMBER_FROM_BILL_SUCCESS,
+  DELETE_MEMBER_FROM_BILL_FAIL,
+  DELETE_MEMBER_FROM_BILL_REQUEST,
 } from "../actions/types";
 
 const initialState = {
@@ -17,6 +23,8 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case DELETE_MEMBER_FROM_BILL_REQUEST:
+    case ADD_MEMBER_TO_BILL_REQUEST:
     case BILL_LIST_LOADING:
       return {
         ...state,
@@ -33,6 +41,8 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: true,
       }
+    case DELETE_MEMBER_FROM_BILL_SUCCESS:
+    case ADD_MEMBER_TO_BILL_SUCCESS:
     case BILL_CREATE_SUCCESS:
     case BILL_LOADED:
       return {
@@ -52,6 +62,12 @@ export default function (state = initialState, action) {
         ...state,
         isLoading: false,
         billList: null,
+      }
+    case DELETE_MEMBER_FROM_BILL_FAIL:
+    case ADD_MEMBER_TO_BILL_FAIL:
+      return {
+        ...state,
+        isLoading: false,
       }
     default:
       return state;

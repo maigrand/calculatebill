@@ -6,6 +6,8 @@ import DefaultInput from "../../components/ui/DefaultInput.jsx";
 import {createBill} from "../../store/actions/billActions";
 import {connect} from "react-redux";
 
+import {faGlassCheers} from "@fortawesome/free-solid-svg-icons";
+
 import "../../styles/_createBillView.scss";
 
 const CreateBillView = ({createBill}) => {
@@ -15,13 +17,14 @@ const CreateBillView = ({createBill}) => {
 
   const handleCreateBill = async (e) => {
     e.preventDefault();
-    createBill({name});
+
+    await createBill({name});
   };
 
   return (
-      <div className="form__container">
-        <form className="form__wrapper" onSubmit={handleCreateBill}>
-          <header>
+      <div className="flex__container">
+        <form className="flex__wrapper column" onSubmit={handleCreateBill}>
+          <header className="center">
             <strong>Create bill</strong>
           </header>
 
@@ -29,6 +32,7 @@ const CreateBillView = ({createBill}) => {
             <DefaultInput
                 placeholder="Enter bill name"
                 label="Bill name"
+                icon={faGlassCheers}
                 onchange={(value) => handleBillName(value)}
             />
           </main>

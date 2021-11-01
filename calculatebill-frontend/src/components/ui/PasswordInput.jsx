@@ -1,20 +1,22 @@
 import React from "react";
 
-const PasswordInput = (props) => {
-    const handleChange = (event) => {
-        props.onchange(event.target.value);
-    }
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faKey} from "@fortawesome/free-solid-svg-icons";
 
-    return (
-        <div className="input__container">
-            <input
-                type="password"
-                placeholder={props.placeholder}
-                onChange={handleChange}
-            />
-            { props.label && (<label>{props.label}</label>) }
-        </div>
-    );
+const PasswordInput = (props) => {
+  const handleChange = (event) => props.onchange(event.target.value);
+  return (
+      <div className="input__container">
+        <input
+            type="password"
+            placeholder={props.placeholder}
+            onChange={handleChange}
+            required
+        />
+        <FontAwesomeIcon icon={faKey} color="white"/>
+        {props.label && (<label>{props.label}</label>)}
+      </div>
+  );
 };
 
 export default PasswordInput;
