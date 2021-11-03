@@ -26,8 +26,8 @@ const MyBillsView = ({loadBillsList, billList, isLoading}) => {
   }, []);
 
   return (
-      <div className="flex__container">
-        <div className="flex__wrapper column">
+      <div className="list__container">
+        <div className="list__wrapper column">
           <header>
             <strong>
               My bills

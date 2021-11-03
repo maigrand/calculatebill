@@ -11,6 +11,7 @@ const PasswordInput = (props) => {
             type="password"
             placeholder={props.placeholder}
             onChange={handleChange}
+            autoComplete="on"
             required
         />
         <FontAwesomeIcon icon={faKey} color="white"/>

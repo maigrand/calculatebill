@@ -30,8 +30,8 @@ export default function Routes() {
   };
 
   useEffect(() => {
-    (token && !isAuthenticated) && setAuth();
-  });
+    token && setAuth();
+  }, [token]);
 
   return (
       <Router>
