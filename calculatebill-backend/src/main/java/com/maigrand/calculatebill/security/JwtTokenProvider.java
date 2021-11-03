@@ -22,18 +22,25 @@ public class JwtTokenProvider {
     @Value("${app.security.jwt.remember-me-expire-length}")
     private int rememberMeExpireLength;
 
-    public String generateToken(Authentication authentication, boolean rememberMe) {
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-
+    public String generateToken(String email, boolean rememberMe) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + (rememberMe ? this.rememberMeExpireLength : this.expireLength));
 
         return Jwts.builder()
-                .setSubject(user.getEmail())
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, this.secret)
                 .compact();
+    }
+
+    public String generateToken(UserEntity userEntity, boolean rememberMe) {
+        return generateToken(userEntity.getEmail(), rememberMe);
+    }
+
+    public String generateToken(Authentication authentication, boolean rememberMe) {
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        return generateToken(user, rememberMe);
     }
 
     public boolean validateToken(String token) {

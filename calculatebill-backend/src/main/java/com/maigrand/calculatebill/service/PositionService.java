@@ -6,6 +6,7 @@ import com.maigrand.calculatebill.exception.EntityNotFoundException;
 import com.maigrand.calculatebill.payload.PositionDetails;
 import com.maigrand.calculatebill.repository.PositionRepository;
 import com.maigrand.calculatebill.validator.group.OnCreate;
+import com.maigrand.calculatebill.validator.group.OnUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +26,8 @@ public class PositionService {
         return this.positionRepository.findAll();
     }
 
-    public PositionEntity findByName(String name) {
-        return this.positionRepository.findByName(name)
+    public PositionEntity findById(String id) {
+        return this.positionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("position not found"));
     }
 
@@ -43,15 +44,11 @@ public class PositionService {
         return this.positionRepository.save(entity);
     }
 
-    public PositionEntity findByNameOrCreate(@Valid PositionDetails details) {
-        Optional<PositionEntity> optionalPositionEntity = this.positionRepository.findByName(details.getName());
-        if (optionalPositionEntity.isPresent()) {
-            return optionalPositionEntity.get();
-        } else {
-            PositionEntity entity = new PositionEntity();
-            entity.setName(details.getName());
-            entity.setCost(details.getCost());
-            return this.positionRepository.save(entity);
-        }
+    @Validated(OnUpdate.class)
+    public PositionEntity update(String id, @Valid PositionDetails details) {
+        PositionEntity entity = findById(id);
+        Optional.ofNullable(details.getName()).ifPresent(entity::setName);
+        Optional.ofNullable(details.getCost()).ifPresent(entity::setCost);
+        return this.positionRepository.save(entity);
     }
 }

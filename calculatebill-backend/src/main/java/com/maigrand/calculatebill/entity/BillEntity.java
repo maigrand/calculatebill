@@ -1,6 +1,6 @@
 package com.maigrand.calculatebill.entity;
 
-import com.maigrand.calculatebill.payload.BillMemberPojo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.*;
@@ -12,6 +12,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class BillEntity {
 
     @Id
@@ -20,29 +21,30 @@ public class BillEntity {
 
     private String name;
 
+    @JsonIgnore
+    private String userId;
+
     @Field(value = "date")
     @Setter(AccessLevel.NONE)
     private Date date = new Date();
 
-    private Integer tips;
+    @EqualsAndHashCode.Exclude
+    private Integer tips = 1;
 
     @Field(value = "total_cost")
+    @EqualsAndHashCode.Exclude
     private Float totalCost;
 
-    private Set<BillMemberPojo> billMemberPojoSet = new HashSet<>();
-
     @DBRef
-    private Set<GuestEntity> guests = new HashSet<>();
+    @EqualsAndHashCode.Exclude
+    private Set<BillGuestEntity> guests = new HashSet<>();
 
-    public void addGuest(GuestEntity guestEntity) {
-        this.guests.add(guestEntity);
-    }
-
-    public void removeGuest(GuestEntity guestEntity) {
-        this.guests.remove(guestEntity);
-    }
-
-    public void addBillMemberPojo(BillMemberPojo billMemberPojo) {
-        this.billMemberPojoSet.add(billMemberPojo);
+    public void addGuest(BillGuestEntity billGuestEntity) {
+        if (this.guests.contains(billGuestEntity)) {
+            this.guests.remove(billGuestEntity);
+            this.guests.add(billGuestEntity);
+            return;
+        }
+        this.guests.add(billGuestEntity);
     }
 }
