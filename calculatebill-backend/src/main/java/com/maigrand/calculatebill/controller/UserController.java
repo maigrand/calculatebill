@@ -8,7 +8,6 @@ import com.maigrand.calculatebill.view.user.UserView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,13 +32,13 @@ public class UserController {
 
     @GetMapping
     @ApiOperation(value = "Получить текущего пользователя (по token в header)")
-    public ResponseEntity<UserEntity> currentUser(@ApiIgnore @AuthenticationPrincipal UserEntity userEntity) {
-        return ResponseEntity.ok(userEntity);
+    public UserEntity currentUser(@ApiIgnore @AuthenticationPrincipal UserEntity userEntity) {
+        return userEntity;
     }
 
     @PostMapping("/sign-in")
     @ApiOperation(value = "Авторизация", tags = "Авторизация")
-    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthenticationCredentials authenticationCredentials) {
+    public AuthenticationTokenDetails authenticate(@RequestBody @Valid AuthenticationCredentials authenticationCredentials) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationCredentials.getEmail(),
@@ -49,13 +48,13 @@ public class UserController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = tokenProvider.generateToken(authentication, true);
-        return ResponseEntity.ok(new AuthenticationTokenDetails(token));
+        return new AuthenticationTokenDetails(token);
     }
 
     @PostMapping("/sign-up")
     @ApiOperation(value = "Регистрация")
-    public ResponseEntity<UserView> register(@RequestBody UserDetails details) {
+    public UserView register(@RequestBody UserDetails details) {
         UserEntity userEntity = this.userService.create(details);
-        return ResponseEntity.ok(new UserView(userEntity));
+        return new UserView(userEntity);
     }
 }

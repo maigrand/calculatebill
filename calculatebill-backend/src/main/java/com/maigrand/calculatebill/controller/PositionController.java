@@ -6,7 +6,6 @@ import com.maigrand.calculatebill.service.PositionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,29 +20,25 @@ public class PositionController {
 
     @GetMapping
     @ApiOperation(value = "Получить все позиции")
-    public ResponseEntity<List<PositionEntity>> list() {
-        List<PositionEntity> all = this.positionService.findAll();
-        return ResponseEntity.ok(all);
+    public List<PositionEntity> list() {
+        return this.positionService.findAll();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Получить позицию по id")
-    public ResponseEntity<PositionEntity> show(@PathVariable("id") String id) {
-        PositionEntity entity = this.positionService.findById(id);
-        return ResponseEntity.ok(entity);
+    public PositionEntity show(@PathVariable("id") String id) {
+        return this.positionService.findById(id);
     }
 
     @PostMapping
     @ApiOperation(value = "Добавить позицию")
-    public ResponseEntity<PositionEntity> create(@RequestBody PositionDetails details) {
-        PositionEntity entity = this.positionService.create(details);
-        return ResponseEntity.ok(entity);
+    public PositionEntity create(@RequestBody PositionDetails details) {
+        return this.positionService.create(details);
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Редактировать позицию")
-    public ResponseEntity<PositionEntity> update(@PathVariable("id") String id, @RequestBody PositionDetails details) {
-        PositionEntity entity = this.positionService.update(id, details);
-        return ResponseEntity.ok(entity);
+    public PositionEntity update(@PathVariable("id") String id, @RequestBody PositionDetails details) {
+        return this.positionService.update(id, details);
     }
 }

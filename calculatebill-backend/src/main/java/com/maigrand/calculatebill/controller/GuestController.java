@@ -6,7 +6,6 @@ import com.maigrand.calculatebill.service.GuestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,29 +20,25 @@ public class GuestController {
 
     @GetMapping
     @ApiOperation(value = "Получить всех гостей")
-    public ResponseEntity<List<GuestEntity>> list() {
-        List<GuestEntity> all = this.guestService.findAll();
-        return ResponseEntity.ok(all);
+    public List<GuestEntity> list() {
+        return this.guestService.findAll();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Получить гостя по id")
-    public ResponseEntity<GuestEntity> show(@PathVariable("id") String id) {
-        GuestEntity entity = this.guestService.findById(id);
-        return ResponseEntity.ok(entity);
+    public GuestEntity show(@PathVariable("id") String id) {
+        return this.guestService.findById(id);
     }
 
     @PostMapping
     @ApiOperation(value = "Добавить гостя")
-    public ResponseEntity<GuestEntity> create(@RequestBody GuestDetails details) {
-        GuestEntity entity = this.guestService.create(details);
-        return ResponseEntity.ok(entity);
+    public GuestEntity create(@RequestBody GuestDetails details) {
+        return this.guestService.create(details);
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Редактировать гостя")
-    public ResponseEntity<GuestEntity> update(@PathVariable("id") String id, @RequestBody GuestDetails details) {
-        GuestEntity entity = this.guestService.update(id, details);
-        return ResponseEntity.ok(entity);
+    public GuestEntity update(@PathVariable("id") String id, @RequestBody GuestDetails details) {
+        return this.guestService.update(id, details);
     }
 }

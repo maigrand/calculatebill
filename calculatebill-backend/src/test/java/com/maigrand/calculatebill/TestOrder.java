@@ -1,5 +1,6 @@
 package com.maigrand.calculatebill;
 
+//todo: RestAssured
 public final class TestOrder {
 
     public static final int CREATE = 0;

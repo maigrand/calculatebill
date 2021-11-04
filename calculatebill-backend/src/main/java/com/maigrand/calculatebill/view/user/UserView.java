@@ -10,6 +10,7 @@ public class UserView {
 
     private final String email;
 
+    //todo: библиотека mapstruct
     public UserView(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.email = userEntity.getEmail();
