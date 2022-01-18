@@ -32,8 +32,8 @@ public class UserController {
 
     @GetMapping
     @ApiOperation(value = "Получить текущего пользователя (по token в header)")
-    public UserEntity currentUser(@ApiIgnore @AuthenticationPrincipal UserEntity userEntity) {
-        return userEntity;
+    public UserView currentUser(@ApiIgnore @AuthenticationPrincipal UserEntity userEntity) {
+        return new UserView(userEntity);
     }
 
     @PostMapping("/sign-in")
@@ -54,7 +54,6 @@ public class UserController {
     @PostMapping("/sign-up")
     @ApiOperation(value = "Регистрация")
     public UserView register(@RequestBody UserDetails details) {
-        UserEntity userEntity = this.userService.create(details);
-        return new UserView(userEntity);
+        return new UserView(userService.create(details));
     }
 }

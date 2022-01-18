@@ -1,6 +1,8 @@
 package com.maigrand.calculatebill.config;
 
+import com.maigrand.calculatebill.payload.SwaggerPageable;
 import org.springframework.context.annotation.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -41,7 +43,8 @@ public class SwaggerConfig {
                 .forCodeGeneration(true)
                 .securityContexts(singletonList(securityContext()))
                 .securitySchemes(singletonList(apiKey()))
-                .tags(new Tag("Авторизация", "", 1));
+                .tags(new Tag("Авторизация", "", 1))
+                .directModelSubstitute(Pageable.class, SwaggerPageable.class);
     }
 
     private ApiKey apiKey() {

@@ -1,7 +1,7 @@
 package com.maigrand.calculatebill.payload.user;
 
-import com.maigrand.calculatebill.validator.group.OnCreate;
-import com.maigrand.calculatebill.validator.group.OnUpdate;
+import com.maigrand.calculatebill.validator.OnCreate;
+import com.maigrand.calculatebill.validator.OnUpdate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

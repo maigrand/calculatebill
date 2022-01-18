@@ -1,16 +1,17 @@
 package com.maigrand.calculatebill.service;
 
 import com.maigrand.calculatebill.entity.UserEntity;
-import com.maigrand.calculatebill.exception.EntityExistsException;
 import com.maigrand.calculatebill.payload.user.UserDetails;
 import com.maigrand.calculatebill.repository.UserRepository;
-import com.maigrand.calculatebill.validator.group.OnCreate;
+import com.maigrand.calculatebill.validator.OnCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.EntityExistsException;
 
 @Service
 @Validated

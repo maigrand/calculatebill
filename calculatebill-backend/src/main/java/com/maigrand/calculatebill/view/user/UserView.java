@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class UserView {
 
-    private final String id;
+    private final Integer id;
 
     private final String email;
 

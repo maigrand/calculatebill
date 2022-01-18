@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/<dbName>?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: <user>
+    password: <pass>
+  web:
+    locale: en
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+app:
+  security:
+    jwt:
+      secret: <secret>
+      expire-length: 36000000
+      remember-me-expire-length: 604800000
+logging:
+  file:
+    path: /path/to/log
+    name: /path/to/log/calculatebill.log
+  level:
+    root: info
+  logback:
+    rollingpolicy:
+      max-history: 5
+server:
+  port: 8083
+springfox:
+  documentation:
+    swagger-ui:
+      base-url: /api
+    swagger:
+      v2:
+        path: /api/api-docs
+debug: false

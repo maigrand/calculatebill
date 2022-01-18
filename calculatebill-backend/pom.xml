@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.maigrand</groupId>
     <artifactId>calculatebill</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.2.0</version>
     <name>calculatebill</name>
     <description>calculatebill</description>
     <properties>
@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,29 +36,20 @@
         </dependency>
 
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
 
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-            <version>0.9.12</version>
-        </dependency>
-
-        <!-- Apache Tika -->
-        <dependency>
-            <groupId>org.apache.tika</groupId>
-            <artifactId>tika-parsers</artifactId>
-            <version>1.26</version>
-        </dependency>
-
-        <!-- Apache Commons -->
-        <dependency>
             <groupId>org.apache.commons</groupId>
-            <artifactId>commons-csv</artifactId>
-            <version>1.8</version>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
 
         <dependency>
